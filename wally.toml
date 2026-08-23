@@ -1,0 +1,19 @@
+[package]
+name = "timoc/loopmvp"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Signal = "sleitnick/signal@^1"
+TableUtil = "sleitnick/table-util@^1"
+Trove = "sleitnick/trove@^1"
+Fusion = "elttob/fusion@^0"
+Cmdr = "evaera/cmdr@1.12.0"
+Trove = "sleitnick/trove@1.8.0"
+Network = "sleitnick/net@0.2.0"
+Promise = "lukadev-0/typed-promise@4.0.2"
+Observers = "sleitnick/observers@^0.4.0"
+ColorUtils = "csqrl/colour-utils@^1.4.1"
+FormatNumber = "kiy4ku/robloxformatnumber@31.1.0"
+t = "osyrisrblx/t@3.1.1"

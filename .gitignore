@@ -1,0 +1,19 @@
+# Git
+coverage.out
+
+profile.out
+profile.svg
+
+trace.json
+
+# Rojo
+sourcemap.json
+
+# Wally
+wally.lock
+
+.vscode
+
+# Selene Linter
+roblox.yml
+selene.toml
