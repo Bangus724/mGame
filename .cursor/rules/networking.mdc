@@ -1,0 +1,16 @@
+---
+description: sleitnick/net remotes, SharedTypes intents, and Signal vs remote
+globs: **/Controllers/**,**/Data/SharedTypes.luau
+alwaysApply: false
+---
+# Networking
+
+Client ↔ server uses `require(ReplicatedStorage.Packages.Network)`. Same-machine events use `Signal`, not remotes.
+
+One RemoteFunction per domain, routed on an intent from `ReplicatedStorage.Data.SharedTypes`. Existing conduits: `onTycoonClientRequest` (RF C→S), `onTycoonServerRequest` (RE S→C), `onTransactionClientRequest` (RF C→S), `onPlayerDataLoaded` (RE S→C). Add verbs as SharedTypes intents + `t` checkers — not a new remote on the same domain.
+
+**Server `Initiate`:** `Network:RemoteEvent` if you push; `Network:Handle(name, handler)` for the RF. Rate-limit, `assert(SharedTypes.check.…(intent))`, dispatch.
+
+**Client:** `Network:RemoteFunction(name)` at module scope; request methods `InvokeServer(intent, ...)`. `Network:Connect` in `Initiate` for pushes. Classes don't own remotes — inject a handler (client Tycoon `buildRequestHandler`).
+
+Don't implement unasked: client `BuildDelta` handling, or a client listener for `onPlayerDataLoaded`.

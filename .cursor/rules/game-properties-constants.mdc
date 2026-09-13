@@ -1,0 +1,22 @@
+---
+description: Put shared math/simple-type constants in GameProperties.luau
+globs: **/*.luau
+alwaysApply: false
+---
+# Shared Game Constants
+
+Shared numeric/vector tuning lives in `src/ReplicatedStorage/Components/Common/GameProperties.luau`. Module-private values stay `local`. Complex tables belong in Data/templates, not here.
+
+Put in GameProperties: gameplay math, limits, sizes, speeds, angles, shared timing / rate-limit / grid config. Style: `Data.NAME = value`, `SCREAMING_SNAKE_CASE`, optional unit comment (`-- studs`), `TableUtil.Lock(Data)`.
+
+```luau
+-- ❌ local magic number in a feature script
+local MOVE_SPEED = 50
+
+-- ✅ GameProperties.luau
+Data.BUILD_CAM_MOVEMENT_SPEED = 50 -- studs/s
+```
+
+After requiring it, alias used props under `-- CONSTANTS` and use the locals — don't repeat `GameProperties.*` in logic. Skip the alias only for a true one-off. Don't rewrite existing inline reads (e.g. server TycoonController rate limits) unless you're already editing that code.
+
+Do **not** put in GameProperties: instances, services, OOP/module state, or one-off values that aren't tuning.

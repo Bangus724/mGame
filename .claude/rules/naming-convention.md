@@ -1,0 +1,19 @@
+# Naming Convention
+
+Applies to: `**/*.luau`
+
+Follow this for **new and edited** names. Don't mass-rename existing APIs.
+
+| Kind | Case | Example |
+|---|---|---|
+| Locals, params, fields | camelCase | `tycoonData`, `ownerId` |
+| Module tables / Classes / requires | PascalCase | `TycoonController`, `RateLimiter` |
+| Controller/Library public functions | PascalCase | `TycoonController.Initiate`, `ObjectSolver.EncodePositionKey` |
+| Controller/Library private functions | `_` + camelCase | `TycoonController._onIncomingRequest` |
+| OOP methods (via `.new`) | camelCase | `Tycoon.new`, `Tycoon.destroy`, `Tycoon.buildRequest` |
+| OOP private methods | `_` + camelCase | `Tycoon._fetchTycoonData` |
+| Constants (GameProperties) | SCREAMING_SNAKE_CASE | `BUILD_CAM_MOVEMENT_SPEED` |
+
+`local function` helpers don't need `_`. Reuse the same word for the same concept (`guid` not mixed with `id`/`uuid`). Shortest unambiguous name.
+
+Don't rename: CreationController `getActiveSession` / `toggleBuildSession`; TycoonController `onCreationRequest`, `onClaimRequest`, `onBuildRequest`, `onInfoRequest`, and server `broadcastInfo` / `broadcastBuildDelta` / `onOutgoingRequest`; TransactionController `onHistoryRequest`.

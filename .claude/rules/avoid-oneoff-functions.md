@@ -1,0 +1,9 @@
+# Avoid One-Time-Use / Needless Functions
+
+Applies to: `**/*.luau`
+
+Don't add a function when it has one call site and only re-derives something already available, wraps a single API with no extra logic, or answers a question the call site can ask directly (player in game → `Players`, not `IsSessionActive`).
+
+Do add one when it has 2+ call sites, encapsulates real branching/validation/mutation, or is an established public surface (`Class.new`, `Class.destroy`).
+
+While editing, inline single-use helpers that don't meet that bar. Don't export a function with zero callers — wire it in the same change (or tell the user it's blocked). Example: `SyncActiveBuildDataBuffer` was dead until connected to `DataController.onBeforeSave`.

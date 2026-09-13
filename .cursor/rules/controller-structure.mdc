@@ -1,0 +1,34 @@
+---
+description: Controller folder layout, Initiate/Start lifecycle, and LoadOrder registration
+globs: **/Controllers/**
+alwaysApply: false
+---
+# Controller Structure
+
+Match a nearby Controller (`CreationController`, `CameraController`, `InputController`, server `DataController`) instead of inventing a layout.
+
+## Placement
+
+- Client: `src/ReplicatedStorage/Controllers/<Name>Controller/`
+- Server: `src/ServerScriptService/Controllers/<Name>Controller/`
+- Folder + `init.luau` (keep `.lua` if that Controller already uses it). No loose files under `Controllers/`.
+- Owner helpers in `Dependencies/` via `script.Dependencies.…`. Shared code goes in Classes / Components / Libraries / Data / Packages.
+
+Existing extra trees — don't add these without a peer: CameraController `States/` (`Load`/`Terminate` only here); InterfaceController `Components/`, `Custom/`, `Themer/`, `InterfacePresets/`, `Utility/`; CreationController `Dependencies/BuildSession/`; DataController `MessageTypes/`; server TransactionController `Products/`.
+
+## Lifecycle
+
+Module table name matches the folder. Optional `Initiate()` / `Start()`. Startup requires LoadOrder, **awaits that controller's Initiate, then fires Start without await** — not a global Initiate-pass then Start-pass.
+
+- `Initiate` — remotes, data, core state
+- `Start` — input, marketplace, work that can wait until this controller's Initiate finished
+
+Register the folder name in the matching LoadOrder (`StarterPlayerScripts/Startup/Data/LoadOrder.luau` or `ServerScriptService/Startup/Data/LoadOrder.luau`), after Controllers it depends on. Every Controllers child must be listed.
+
+## Cross-controller and data
+
+`require` peers when safe. On a cycle, export a `Signal` on the owner (`DataController.onBeforeSave`) and connect from the dependent. UI requires Controllers and passes callbacks as props — it does not own remotes.
+
+Nothing may yield between `DataController.GetPlayerDataCopy` and the matching `EditPlayerData`. Mutate the copy, then persist.
+
+Don't drive-by-fix: empty `Initiate` stubs, missing `Start`s, Interface UI loading in `Initiate`, or client vs server LoadOrder sort.
